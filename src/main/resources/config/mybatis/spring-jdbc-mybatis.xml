@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+	default-autowire="byName">
+	<context:component-scan base-package="com.ss">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!-- 读取数据库配置文件 -->
+	<util:properties id="dataSourceProps"
+		location="classpath:/config/jdbc_mysql.properties"></util:properties>
+	<!-- 阿里 druid数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<!-- 数据库基本信息配置 -->
+		<property name="url" value="#{dataSourceProps['datasource.url']}" />
+		<property name="username" value="#{dataSourceProps['datasource.username']}" />
+		<property name="password" value="#{dataSourceProps['datasource.password']}" />
+		<property name="driverClassName"
+			value="#{dataSourceProps['datasource.driverClassName']}" />
+		<property name="filters" value="#{dataSourceProps['db.filters']}" />
+		<!-- 最大并发连接数 -->
+		<property name="maxActive" value="#{dataSourceProps['db.maxActive']}" />
+		<!-- 初始化连接数量 -->
+		<property name="initialSize" value="#{dataSourceProps['db.initialSize']}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="#{dataSourceProps['db.maxWait']}" />
+		<!-- 最小空闲连接数 -->
+		<property name="minIdle" value="#{dataSourceProps['db.minIdle']}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis"
+			value="#{dataSourceProps['timeBetweenEvictionRunsMillis']}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis"
+			value="#{dataSourceProps['minEvictableIdleTimeMillis']}" />
+		<property name="validationQuery" value="#{dataSourceProps['validationQuery']}" />
+		<property name="testWhileIdle" value="#{dataSourceProps['testWhileIdle']}" />
+		<property name="testOnBorrow" value="#{dataSourceProps['testOnBorrow']}" />
+		<property name="testOnReturn" value="#{dataSourceProps['testOnReturn']}" />
+		<property name="maxOpenPreparedStatements"
+			value="#{dataSourceProps['maxOpenPreparedStatements']}" />
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="#{dataSourceProps['removeAbandoned']}" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="#{dataSourceProps['removeAbandonedTimeout']}" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="#{dataSourceProps['logAbandoned']}" />
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml" />
+		<property name="plugins">
+			<array>
+				<ref bean="pagePlugin" />
+			</array>
+		</property>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:config/mybatis/sqlmap/*.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="pagePlugin" class="com.framework.orm.mybatis.interceptor.PageInterceptor">
+		<property name="dataBaseType" value="#{dataSourceProps['datasource.type']}"></property>
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="remove*">
+					PROPAGATION_REQUIRED,-Exception
+				</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="saveCodeAndReturnCode">PROPAGATION_REQUIRES_NEW,-Exception</prop>
+				<!-- <prop key="getInsertHaveNotDeleteCodeNum">PROPAGATION_REQUIRED,ISOLATION_SERIALIZABLE,readOnly</prop> 
+					<prop key="getInsertHaveNotDeleteCodeNum">PROPAGATION_REQUIRED,ISOLATION_SERIALIZABLE,readOnly</prop> -->
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="edit*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="del*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="copy*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="confirm*">PROPAGATION_REQUIRED,-Exception</prop>
+
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+		<property name="beanNames">
+			<value>*Service</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
+		<property name="transactionInterceptor" ref="transactionInterceptor" />
+	</bean>
+	<bean id="baseDao" class="com.framework.orm.mybatis.dao.impl.BaseDao">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+
+
+</beans>

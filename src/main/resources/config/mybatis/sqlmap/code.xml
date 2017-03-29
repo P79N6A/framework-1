@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="code">
+	<resultMap id="codeMap" type="code">
+		<id column="CODE_ID" property="codeId" />
+		<result column="B_CODE" property="code" />
+		<result column="CODE_NUM" property="codeNum" />
+		<result column="SORT_NUM" property="sortNum" />
+		<result column="CODE_SORT_NUM" property="codeSortNum" />
+		<result column="STATUS" property="status" />
+		<result column="CODE_FIRST" property="codeFirst" />
+		<result column="CODE_SECOND" property="codeSecond" />
+		<result column="CODE_THREE" property="codeThree" />
+		<result column="CODE_FOUR" property="codeFour" />
+		<result column="CODE_FIVE" property="codeFive" />
+		<result column="CODE_SIX" property="codeSix" />
+		<result column="CREATETIMESTAMP" property="createTimestamp" javaType="java.sql.Timestamp"/>
+		<result column="CREATETIME" property="createTime" />
+		<!-- jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" jdbcType="TIME" 
+			jdbcType="DATE" javaType="java.util.Date" -->
+		<result column="CREATEDATE" property="createDate" javaType="java.util.Date"/>
+
+	</resultMap>
+
+	<sql id="base_column">
+		CODE_ID,
+		B_CODE,
+		CODE_NUM,
+		SORT_NUM,
+		CODE_SORT_NUM,
+		STATUS,
+		CODE_FIRST,
+		CODE_SECOND,
+		CODE_THREE,
+		CODE_FOUR,
+		CODE_FIVE,
+		CODE_SIX,
+		CREATETIMESTAMP,
+		CREATEDATE,
+		CREATETIME
+	</sql>
+
+	<insert id="saveCode" parameterType="code">
+		insert into T_CODE
+		(
+		<include refid="base_column" />
+		)
+		values
+		(
+		#{codeId,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{codeNum,jdbcType=VARCHAR},
+		#{sortNum,jdbcType=VARCHAR},
+		#{codeSortNum,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{codeFirst,jdbcType=VARCHAR},
+		#{codeSecond,jdbcType=VARCHAR},
+		#{codeThree,jdbcType=VARCHAR},
+		#{codeFour,jdbcType=VARCHAR},
+		#{codeFive,jdbcType=VARCHAR},
+		#{codeSix,jdbcType=VARCHAR},
+		#{createTimestamp,jdbcType=TIMESTAMP},
+		#{createDate,jdbcType=DATE},
+		#{createTime,jdbcType=TIMESTAMP}
+
+		)
+	</insert>
+
+	<sql id="queryCondition">
+		<where>
+			<if
+				test="(null==codeFirst or ''==codeFirst) and (null==codeSecond or ''== codeSecond ) and (null== codeThree or  ''== codeThree ) and (null ==codeFour or ''==codeFour) and (null==codeFive or ''==codeFive) and (null==codeSix or ''==codeSix) ">
+				and CODE_FIRST is null and CODE_SECOND is null and CODE_THREE
+				is null and CODE_FOUR is null and CODE_FIVE is null and CODE_SIX is
+				null
+			</if>
+			<if
+				test="null!=codeFirst and ''!=codeFirst and (null==codeSecond or ''== codeSecond ) and (null== codeThree or  ''== codeThree ) and (null ==codeFour or ''==codeFour) and (null==codeFive or ''==codeFive) and (null==codeSix or ''==codeSix) ">
+				and CODE_FIRST =#{codeFirst} and CODE_SECOND is null and
+				CODE_THREE is null and CODE_FOUR is null and CODE_FIVE is null and
+				CODE_SIX is null
+			</if>
+			<if
+				test="null!=codeFirst and ''!=codeFirst and (null!=codeSecond and ''!= codeSecond) and (null== codeThree or  ''== codeThree ) and (null ==codeFour or ''==codeFour) and (null==codeFive or ''==codeFive) and (null==codeSix or ''==codeSix) ">
+				and CODE_FIRST =#{codeFirst} and CODE_SECOND=#{codeSecond} and
+				CODE_THREE is null and CODE_FOUR is null and CODE_FIVE is null and
+				CODE_SIX is null
+			</if>
+
+			<if
+				test="null!=codeFirst and ''!=codeFirst and (null!=codeSecond and ''!= codeSecond) and (null!=codeThree and ''!=codeThree) and (null ==codeFour or ''==codeFour) and (null==codeFive or ''==codeFive) and (null==codeSix or ''==codeSix) ">
+				and CODE_FIRST =#{codeFirst} and CODE_SECOND=#{codeSecond} and
+				CODE_THREE =#{codeThree} and CODE_FOUR is null and CODE_FIVE is null
+				and CODE_SIX is null
+			</if>
+
+			<if
+				test="null!=codeFirst and ''!=codeFirst and (null!=codeSecond and ''!= codeSecond) and (null!=codeThree and ''!=codeThree) and (null!=codeFour and ''!=codeFour) and (null==codeFive or ''==codeFive) and (null==codeSix or ''==codeSix) ">
+				and CODE_FIRST =#{codeFirst} and CODE_SECOND=#{codeSecond} and
+				CODE_THREE =#{codeThree} and CODE_FOUR =#{codeFour} and CODE_FIVE is
+				null and CODE_SIX is null
+			</if>
+
+			<if
+				test="null!=codeFirst and ''!=codeFirst and (null!=codeSecond and ''!= codeSecond) and (null!=codeThree and ''!=codeThree) and (null!=codeFour and ''!=codeFour)and (null!=codeFive and ''!=codeFive) and (null==codeSix or ''==codeSix) ">
+				and CODE_FIRST =#{codeFirst} and CODE_SECOND=#{codeSecond} and
+				CODE_THREE =#{codeThree} and CODE_FOUR =#{codeFour} and CODE_FIVE
+				=#{codeFive} and CODE_SIX is null
+			</if>
+
+			<if
+				test="null!=codeFirst and ''!=codeFirst and (null!=codeSecond and ''!= codeSecond) and (null!=codeThree and ''!=codeThree) and (null!=codeFour and ''!=codeFour)and (null!=codeFive and ''!=codeFive) and (null!=codeSix and ''!=codeSix)">
+				and CODE_FIRST =#{codeFirst} and CODE_SECOND=#{codeSecond} and
+				CODE_THREE =#{codeThree} and CODE_FOUR =#{codeFour} and CODE_FIVE
+				=#{codeFive} and CODE_SIX =#{codeSix}
+			</if>
+			<if test="null!=status and ''!=status ">
+				and STATUS =#{status}
+			</if>
+		</where>
+	</sql>
+	<select id="getIsHaveDeleteCodeCount" parameterType="code"
+		resultType="Long">
+		SELECT count(1) FROM T_CODE
+		<include refid="queryCondition" />
+	</select>
+
+	<select id="getMinDeleteCode" parameterType="code" resultMap="codeMap">
+		SELECT MIN(SORT_NUM) as SORT_NUM FROM T_CODE
+		<include refid="queryCondition" />
+		for update
+	</select>
+
+	<select id="getMaxNormalCodeNum" parameterType="code" resultMap="codeMap">
+		SELECT MAX(SORT_NUM) as SORT_NUM FROM T_CODE
+		<include refid="queryCondition" />
+		for update
+	</select>
+
+	<update id="updateCodeStatus" parameterType="code">
+		UPDATE T_CODE SET
+		STATUS=#{status} WHERE B_CODE = #{code}
+	</update>
+
+	<delete id="delteCodeById" parameterType="code">
+		DELETE FROM T_CODE
+		WHERE CODE_ID = #{codeId}
+	</delete>
+
+	<!-- 高级查询初始化工作 -->
+	<sql id="advancedSearchbase_column">
+		information_schema.`COLUMNS`.TABLE_NAME,
+		information_schema.`COLUMNS`.COLUMN_NAME,
+		information_schema.`COLUMNS`.ORDINAL_POSITION,
+		information_schema.`COLUMNS`.COLUMN_DEFAULT,
+		information_schema.`COLUMNS`.IS_NULLABLE,
+		information_schema.`COLUMNS`.DATA_TYPE,
+		information_schema.`COLUMNS`.CHARACTER_MAXIMUM_LENGTH,
+		information_schema.`COLUMNS`.CHARACTER_OCTET_LENGTH,
+		information_schema.`COLUMNS`.NUMERIC_PRECISION,
+		information_schema.`COLUMNS`.NUMERIC_SCALE,
+		information_schema.`COLUMNS`.CHARACTER_SET_NAME,
+		information_schema.`COLUMNS`.COLLATION_NAME,
+		information_schema.`COLUMNS`.COLUMN_TYPE,
+		information_schema.`COLUMNS`.COLUMN_KEY,
+		information_schema.`COLUMNS`.EXTRA,
+		information_schema.`COLUMNS`.`PRIVILEGES`,
+		information_schema.`COLUMNS`.COLUMN_COMMENT
+	</sql>
+	<select id="getAdvancedSearch" parameterType="map" resultType="map">
+		SELECT
+		<include refid="advancedSearchbase_column" />
+		from information_schema.columns
+		where TABLE_SCHEMA =#{schema}
+		group by
+		TABLE_NAME,COLUMN_NAME
+	</select>
+	
+	<select id="getAllList" resultMap="codeMap" parameterType="code" >
+		select 
+		 <include refid="base_column"/>
+			
+		from t_code 
+	</select>
+
+
+</mapper>
