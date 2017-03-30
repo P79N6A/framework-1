@@ -181,8 +181,13 @@
 	<select id="getAllList" resultMap="codeMap" parameterType="code" >
 		select 
 		 <include refid="base_column"/>
-			
 		from t_code 
+	</select>
+	
+	<select id="getPageList" resultMap="codeMap" parameterType="page">
+		select
+		<include refid="base_column" />
+		from t_code  
 	</select>
 
 

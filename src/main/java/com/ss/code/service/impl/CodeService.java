@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.framework.orm.page.DataSourceResult;
+import com.framework.orm.page.Page;
 import com.ss.code.bean.CodeBean;
 import com.ss.code.dao.CodeDao;
 import com.ss.code.service.ICodeService;
@@ -30,18 +30,13 @@ public class CodeService implements ICodeService {
 	@Autowired
 	private CodeDao codeDao;
 	
-	private DataSourceResult toDataSourceReulst(
-			DataSourceResult dataSourceRequest, List<?> data) throws Exception {
-		DataSourceResult dataSourceReulst = new DataSourceResult();
-		dataSourceReulst.setTotal(dataSourceRequest.getTotal());
-		dataSourceReulst.setData(data);
-		return dataSourceReulst;
-
-	}
-	
-	public  DataSourceResult getList(DataSourceResult dataSourceRequest) throws Exception {
+	/**
+	 *(non-Javadoc)
+	 * @see com.ss.code.service.ICodeService#getPageList(com.framework.orm.page.Page)
+	 */
+	public List<CodeBean> getPageList(Page<CodeBean> page) throws Exception{
+		return codeDao.getEntityList("code.getPageList", page);
 		
-		return  toDataSourceReulst(dataSourceRequest ,codeDao.getEntityList("code.getList",dataSourceRequest));
 	}
 	/**
 	 * 

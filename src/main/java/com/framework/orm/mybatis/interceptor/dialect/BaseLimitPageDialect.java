@@ -3,13 +3,11 @@ package com.framework.orm.mybatis.interceptor.dialect;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//import com.framework.page.Page;
-import com.framework.orm.page.DataSourceRequest;
+import com.framework.orm.page.Page;
 public abstract class BaseLimitPageDialect {
 
-//	public abstract String getLimitSqlString(Page page,String sql);
 	
-	public abstract String getLimitSqlString(DataSourceRequest dataSourceRequest,String sql);
+	public abstract String getLimitSqlString(Page dataSourceRequest,String sql);
 	
 	/**
 	 * 

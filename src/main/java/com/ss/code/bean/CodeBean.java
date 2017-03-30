@@ -17,7 +17,7 @@ public class CodeBean implements Serializable {
 	/**  <p>.</p> */
 	private static final long serialVersionUID = 5506348102109428303L;
 
-	private CodeBean(){
+	public CodeBean(){
 		
 	}
 	

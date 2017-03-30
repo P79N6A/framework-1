@@ -3,7 +3,7 @@ package com.framework.orm.mybatis.interceptor.dialect.mysql;
 
 
 import com.framework.orm.mybatis.interceptor.dialect.BaseLimitPageDialect;
-import com.framework.orm.page.DataSourceRequest;
+import com.framework.orm.page.Page;
 
 /**
  * <p> MySqlDialect.java.</p>
@@ -15,22 +15,23 @@ import com.framework.orm.page.DataSourceRequest;
  */
 public class MySqlLimitPageDialect extends BaseLimitPageDialect {
 
-
-
 	/**
 	 * 
-	 *(non-Javadoc)
-	 * @see com.framework.orm.mybatis.interceptor.dialect.BaseLimitPageDialect#getLimitSqlString(com.framework.orm.page.DataSourceRequest, java.lang.String)
+	 * (non-Javadoc)
+	 * 
+	 * @see com.framework.orm.mybatis.interceptor.dialect.BaseLimitPageDialect#getLimitSqlString(com.framework.orm.page.Page,
+	 *      java.lang.String)
 	 */
-	public String getLimitSqlString(DataSourceRequest dataSourceRequest ,
-			String sql) {
-		int offset = (dataSourceRequest.getPage() - 1) * dataSourceRequest.getPageSize();
-		String sqlString = sql +" limit "+ offset +" ,"+ dataSourceRequest.getPageSize();
-		//String sqlString =  sql.replaceAll("[^\\s,]+\\.", "") +" limit "+ offset +" ,"+ page.getPageSize();
-		return sqlString;
-		//StringBuffer sqlBuffer = new StringBuffer(sql);
-		//sqlBuffer.append(" limit ").append(offset).append(",").append(page.getPageSize());
-		//return sqlBuffer.toString(); 
+	@Override
+	public String getLimitSqlString(Page page, String sql) {
+		long offset = (page.getCurrent() - 1) * page.getPageSize();
+		//String sqlString = sql + " limit " + offset + " ," + page.getPageSize();
+		// String sqlString = sql.replaceAll("[^\\s,]+\\.", "") +" limit "+
+		// offset +" ,"+ page.getPageSize();
+		//return sqlString;
+		 StringBuffer sqlBuffer = new StringBuffer(sql);
+		 sqlBuffer.append(" limit ").append(offset).append(",").append(page.getPageSize());
+		 return sqlBuffer.toString();
 	}
 	
 

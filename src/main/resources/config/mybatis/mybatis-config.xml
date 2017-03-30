@@ -4,10 +4,8 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.framework.orm.page.DataSourceResult"
+		<typeAlias type="com.framework.orm.page.Page"
 			alias="page" />
-		<typeAlias type="com.framework.orm.page.DataSourceRequest"
-			alias="pageRequest" />
 		<typeAlias type="com.ss.code.bean.CodeBean" alias="code" />
 		<!-- quartz <typeAlias type="com.framework.quartz.entity.TaskJob" alias="taskJob" 
 			/> -->

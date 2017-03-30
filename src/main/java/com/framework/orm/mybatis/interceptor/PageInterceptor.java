@@ -30,7 +30,7 @@ import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 
 import com.framework.orm.mybatis.interceptor.dialect.BaseLimitPageDialect;
 import com.framework.orm.mybatis.interceptor.dialect.util.PageLimitUtil;
-import com.framework.orm.page.DataSourceRequest;
+import com.framework.orm.page.Page;
 
 
 /**
@@ -87,8 +87,8 @@ public class PageInterceptor implements  Interceptor {
 		
 		MappedStatement mappedStatement = (MappedStatement) metaStatementHandler.getValue("delegate.mappedStatement");
 		Connection connection = (Connection)invocation.getArgs()[0]; 
-		if(obj instanceof DataSourceRequest){
-			DataSourceRequest page = (DataSourceRequest)obj;
+		if(obj instanceof Page){
+			Page page = (Page)obj;
 			//拦截到的prepare方法参数是一个Connection对象  
 		    String pageSql =  (PageLimitUtil.get(dataBaseType).factoryDialect(dataBaseType)).getLimitSqlString(page, sql);
 		    //给当前的page参数对象设置总记录数  
@@ -129,7 +129,7 @@ public class PageInterceptor implements  Interceptor {
 		 
 	}
 	
-   private void setTotalRecord(DataSourceRequest page,  MappedStatement mappedStatement, Connection connection) {  
+   private void setTotalRecord(Page page,  MappedStatement mappedStatement, Connection connection) {  
 		
 		BoundSql boundSql = mappedStatement.getBoundSql(page);
 		String sql = boundSql.getSql();

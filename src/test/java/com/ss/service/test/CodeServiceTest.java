@@ -1,8 +1,11 @@
 package com.ss.service.test;
 
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import com.framework.orm.page.Page;
 import com.framework.test.SpringBeanUtil;
 import com.ss.code.bean.CodeBean;
 import com.ss.code.service.ICodeService;
@@ -35,20 +38,23 @@ public  ICodeService codeService;
 //	public void testGetInsertHaveNotDeleteCodeNum() {
 //	}
 
-	public void testSaveCode()throws Exception {
-//		CodeBean codeBean = new CodeBean();
-//		codeBean.setCodeFirst("ITRS");
-//		codeBean.setCodeSecond("02");
-//		codeBean.setCodeThree("03");
-//		codeBean.setCodeNum("00000000");
-//		codeService.saveCodeAndReturnCode(new CodeBean.Builder()
-//				.codeNum("00").createDate(new Date()).createTime(new Date()).createTimestamp(new Timestamp(System.currentTimeMillis())).build());
+//	public void testSaveCode()throws Exception {
+//		for (int i = 0; i < 130; i++) {
+//
+//			codeService.saveCodeAndReturnCode(new CodeBean.Builder().codeNum("00").createDate(new Date())
+//					.createTime(new Date()).createTimestamp(new Timestamp(System.currentTimeMillis())).build());
+//		}
+//	}
+	
+	public void testGetPageList()throws	 Exception{
+		Page<CodeBean> page = new Page<CodeBean>();
+		List<CodeBean> list  = codeService.getPageList(page);
 	}
 	
-	public void testGetAllList() throws Exception{
-		CodeBean codeBean = null;
-		List<CodeBean>  list =  codeService.getAllList(codeBean);
-	}
+//	public void testGetAllList() throws Exception{
+//		CodeBean codeBean = null;
+//		List<CodeBean>  list =  codeService.getAllList(codeBean);
+//	}
 
 //	public void testUpdateCodeStatus() {
 //	}

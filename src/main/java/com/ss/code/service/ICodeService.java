@@ -4,6 +4,7 @@ package com.ss.code.service;
 import java.util.List;
 import java.util.Map;
 
+import com.framework.orm.page.Page;
 import com.ss.code.bean.CodeBean;
 
 /**
@@ -110,5 +111,6 @@ public interface ICodeService {
 	
 	public List<Map<String,Object>>   getAdvancedSearch(Map<String,Object>  map )  throws Exception;
 	public  List<CodeBean> getAllList(CodeBean code) throws Exception;
+	public List<CodeBean> getPageList(Page<CodeBean> page) throws Exception;
 
 }
