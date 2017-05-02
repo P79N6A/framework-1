@@ -8,12 +8,17 @@
 	<name>framework Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<spring.version>4.2.6.RELEASE</spring.version>
+		<spring.version>4.3.5.RELEASE</spring.version>
 		<druid.version>1.0.26</druid.version>
 		<org.mybatis.version>3.3.1</org.mybatis.version>
 		<mybatis.spring.version>1.2.5</mybatis.spring.version>
 		<com.fasterxml.jackson.version>2.4.0</com.fasterxml.jackson.version>
 		<com.alibaba.fastjson.version>1.2.30</com.alibaba.fastjson.version>
+		<security.version>4.2.2.RELEASE</security.version>
+		<shiro.version>1.2.6</shiro.version>
+		<net.sf.ehcache.version>2.8.2</net.sf.ehcache.version>
+		<net.sf.ehcache.jgroup.version>1.4</net.sf.ehcache.jgroup.version>
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -140,6 +145,55 @@
 			<version>1.4.9</version>
 		</dependency>
 		<!-- xml end -->
+		<!-- spring security start -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${security.version}</version>
+		</dependency>
+		<!-- spring security end -->
+		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring -->
+		<!-- apache shiro -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-cas</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<!-- apache shiro -->
+		<!-- cache start  -->
+		<!-- ehcache start -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${net.sf.ehcache.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-jgroupsreplication</artifactId>
+			<version>${net.sf.ehcache.jgroup.version}</version>
+		</dependency>
+		<!-- ehcache end -->
+		<dependency>
+			<groupId>com.googlecode.xmemcached</groupId>
+			<artifactId>xmemcached</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<!-- cache end  -->
 	</dependencies>
 	<build>
 		<finalName>framework</finalName>

@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="security">
+	<!-- 用户表 -->
+	<resultMap id="sysAuthorityUser" type="sysAuthorityUser">
+		<id property="authorityUserId" column="AUTHORITY_USER_ID" />
+
+		<result property="username" column="AUTHORITY_USER_ACCOUNT" />
+
+		<result property="authorityUserName" column="AUTHORITY_USER_NAME" />
+
+		<result property="password" column="AUTHORITY_USER_PASSWORD" />
+
+		<result property="authorityUserDesc" column="AUTHORITY_USER_DESC" />
+
+		<result property="authorityUserIssys" column="AUTHORITY_USER_ISSYS" />
+
+		<result property="authoorityUserEnabled" column="AUTHOORITY_USER_ENABLED" />
+		<!-- 用户对应的用户角色表 -->
+		<collection column="AUTHORITY_USER_ID" property="sysAuthorityUserRoles"
+			javaType="ArrayList" select="querySysAuthorityUsersRoles">
+
+		</collection>
+	</resultMap>
+
+	<!-- 用户对应的用户角色表 -->
+	<select id="querySysAuthorityUsersRoles" parameterType="sysAuthorityUser"
+		resultMap="sysAuthorityUserRole">
+		SELECT
+		sys_authority_user_role.AUTHORITY_USER_ROLE_ID,
+		sys_authority_user_role.AUTHORITY_USER_ID,
+		sys_authority_user_role.AUTHORITY_ROLES_ID,
+		sys_authority_roles.AUTHORITY_ROLES_ID as ROLES_ID,
+		sys_authority_roles.AUTHORITY_ROLES_NAME,
+		sys_authority_roles.AUTHORITY_ROLES_DESC,
+		sys_authority_roles.AUTHORITY_ROLES_ISSYS,
+		sys_authority_roles.AUTHORITY_ROLES_ENABLED,
+		SYS_USER.AUTHORITY_USER_ID as USER_ID ,
+		SYS_USER.AUTHORITY_USER_ACCOUNT,
+		SYS_USER.AUTHORITY_USER_NAME,
+		SYS_USER.AUTHORITY_USER_PASSWORD,
+		SYS_USER.AUTHORITY_USER_DESC,
+		SYS_USER.AUTHORITY_USER_ISSYS,
+		SYS_USER.AUTHOORITY_USER_ENABLED
+		FROM
+		sys_authority_user_role
+		,
+		sys_authority_roles ,
+		SYS_USER
+
+		where
+		sys_authority_user_role.AUTHORITY_ROLES_ID=sys_authority_roles.AUTHORITY_ROLES_ID
+		and
+		sys_authority_user_role.AUTHORITY_USER_ID=SYS_USER.AUTHORITY_USER_ID
+		and sys_authority_user_role.AUTHORITY_USER_ID=#{authorityUserId}
+
+	</select>
+
+	<!-- base user info -->
+	<sql id="sysAuthorityUser_base_column">
+		AUTHORITY_USER_ID,
+		AUTHORITY_USER_ACCOUNT,
+		AUTHORITY_USER_NAME,
+		AUTHORITY_USER_PASSWORD,
+		AUTHORITY_USER_DESC,
+		AUTHORITY_USER_ISSYS,
+		AUTHOORITY_USER_ENABLED
+	</sql>
+	<select id="getSysAuthorityUserByUserName" parameterType="String"
+		resultMap="sysAuthorityUser">
+		SELECT
+		<include refid="sysAuthorityUser_base_column" />
+		FROM
+		SYS_USER
+		WHERE
+		SYS_USER.AUTHORITY_USER_ACCOUNT =
+		#{userName}
+
+	</select>
+
+	<select id="loadUserByUsername" resultMap="sysAuthorityUser"
+		parameterType="String">
+		SELECT
+		<include refid="sysAuthorityUser_base_column" />
+		FROM SYS_USER WHERE
+		AUTHORITY_USER_ACCOUNT=#{authorityUserAccount}
+	</select>
+
+	<resultMap id="sysAuthorities" type="sysAuthorities">
+		<id property="authoritiesId" column="AUTHORITIES_ID" />
+
+		<result property="authoritiesName" column="AUTHORITIES_NAME" />
+
+		<result property="authoritiesDesc" column="AUTHORITIES_DESC" />
+
+		<result property="authoritiesIssys" column="AUTHORITIES_ISSYS" />
+
+		<result property="authoritiesEnabled" column="AUTHORITIES_ENABLED" />
+	</resultMap>
+
+	<sql id="sysAuthorities_base_column">
+		AUTHORITIES_ID,
+		AUTHORITIES_NAME,
+		AUTHORITIES_DESC,
+		AUTHORITIES_ISSYS,
+		AUTHORITIES_ENABLED
+	</sql>
+
+	<select id="getSysAuthoritiesList" resultMap="sysAuthorities"
+		parameterType="sysAuthorities">
+		SELECT
+		<include refid="sysAuthorities_base_column" />
+		FROM SYS_AUTHORITIES
+	</select>
+
+	<resultMap id="sysAuthorityUserRole" type="sysAuthorityUserRole">
+		<id property="authorityUserRoleId" column="AUTHORITY_USER_ROLE_ID" />
+		<result property="authorityUserId" column="AUTHORITY_USER_ID" />
+		<result property="authorityRolesId" column="AUTHORITY_ROLES_ID" />
+		<association property="sysAuthorityRoles" column="ROLES_ID"
+			javaType="sysAuthorityRoles" resultMap="sysAuthorityRoles"></association>
+		<association property="sysAuthorityUser" column="USER_ID"
+			javaType="sysAuthorityUser" resultMap="sysAuthorityUser"></association>
+	</resultMap>
+
+	<resultMap id="sysAuthorityRolesAuthorities" type="sysAuthorityRolesAuthorities">
+		<id property="authorityRolesAuthoritiesId" column="AUTHORITY_ROLES_AUTHORITIES_ID" />
+
+		<result property="authorityRolesId" column="AUTHORITY_ROLES_ID" />
+
+		<result property="authoritiesId" column="AUTHORITIES_ID" />
+	</resultMap>
+	<!-- 角色表 -->
+	<resultMap id="sysAuthorityRoles" type="sysAuthorityRoles">
+		<id property="authorityRolesId" column="AUTHORITY_ROLES_ID" />
+
+		<result property="authorityRolesName" column="AUTHORITY_ROLES_NAME" />
+
+		<result property="authorityRolesDesc" column="AUTHORITY_ROLES_DESC" />
+
+		<result property="authorityRolesIssys" column="AUTHORITY_ROLES_ISSYS" />
+
+		<result property="authorityRolesEnabled" column="AUTHORITY_ROLES_ENABLED" />
+		<!-- 角色对应的权限 -->
+		<!-- <collection column="AUTHORITY_ROLES_ID" property="ListSysAuthorityRolesAuthorities" -->
+		<!-- javaType="ArrayList" select="querySysAuthorities"> -->
+
+		<!-- </collection> -->
+	</resultMap>
+
+	<!-- 角色对应的权限 -->
+	<select id="querySysAuthorities" parameterType="sysAuthorityRoles"
+		resultMap="sysAuthorityRolesAuthorities">
+		SELECT
+		sys_authority_roles.AUTHORITY_ROLES_ID,
+		sys_authority_roles.AUTHORITY_ROLES_NAME,
+		sys_authority_roles.AUTHORITY_ROLES_DESC,
+		sys_authority_roles.AUTHORITY_ROLES_ISSYS,
+		sys_authority_roles.AUTHORITY_ROLES_ENABLED,
+		sys_authority_roles_authorities.AUTHORITY_ROLES_AUTHORITIES_ID,
+		sys_authority_roles_authorities.AUTHORITY_ROLES_ID,
+		sys_authority_roles_authorities.AUTHORITIES_ID,
+		sys_authorities.AUTHORITIES_ID,
+		sys_authorities.AUTHORITIES_NAME,
+		sys_authorities.AUTHORITIES_DESC,
+		sys_authorities.AUTHORITIES_ISSYS,
+		sys_authorities.AUTHORITIES_ENABLED
+		FROM
+		sys_authority_roles ,
+		sys_authority_roles_authorities ,
+		sys_authorities
+		where
+		sys_authority_roles.AUTHORITY_ROLES_ID=sys_authority_roles_authorities.AUTHORITY_ROLES_ID
+		and
+		sys_authority_roles_authorities.AUTHORITIES_ID=sys_authorities.AUTHORITIES_ID
+		and
+		sys_authority_roles_authorities.AUTHORITY_ROLES_ID=#{authorityRolesId}
+
+	</select>
+
+	<sql id="sysAuthorityRoles_base_column">
+		sys_authority_roles.AUTHORITY_ROLES_ID,
+		sys_authority_roles.AUTHORITY_ROLES_NAME,
+		sys_authority_roles.AUTHORITY_ROLES_DESC,
+		sys_authority_roles.AUTHORITY_ROLES_ISSYS,
+		sys_authority_roles.AUTHORITY_ROLES_ENABLED,
+	</sql>
+
+	<select id="getSysAuthorityRoleByRoleId" resultMap="sysAuthorityRoles"
+		parameterType="String">
+		SELECT
+		<include refid="sysAuthorityRoles_base_column" />
+		FROM sys_authority_roles WHERE
+		AUTHORITY_ROLES_ID=#{authorityRolesId}
+	</select>
+	<resultMap id="sysAuthorityResources" type="sysAuthorityResources">
+		<id property="authorityResourcesId" column="AUTHORITY_RESOURCES_ID" />
+
+		<result property="authorityResourcesName" column="AUTHORITY_RESOURCES_NAME" />
+
+		<result property="authorityResourcesDesc" column="AUTHORITY_RESOURCES_DESC" />
+
+		<result property="authorityResourcesType" column="AUTHORITY_RESOURCES_TYPE" />
+
+		<result property="authorityResourcesSort" column="AUTHORITY_RESOURCES_SORT" />
+
+		<result property="authorityResourcesUrl" column="AUTHORITY_RESOURCES_URL" />
+
+		<result property="authorityResourcesIssys" column="AUTHORITY_RESOURCES_ISSYS" />
+
+		<result property="authorityResourcesEnabled" column="AUTHORITY_RESOURCES_ENABLED" />
+	</resultMap>
+	<sql id="sysAuthorityResources_base_column">
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_ID,
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_NAME,
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_DESC,
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_TYPE,
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_SORT,
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_URL,
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_ISSYS,
+		SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_ENABLED
+	</sql>
+	<select id="getSysAuthorityResources" resultMap="sysAuthorityResources"
+		parameterType="String">
+		SELECT
+		<include refid="sysAuthorityResources_base_column" />
+		FROM
+		SYS_AUTHORITIES_RESOURCES sasr,
+		SYS_AUTHORITIES sa,
+		SYS_AUTHORITY_RESOURCES SYS_AUTHORITY_RESOURCES
+		WHERE
+		sasr.AUTHORITIES_ID = sa.AUTHORITIES_ID AND
+		sasr.AUTHORITY_RESOURCES_ID
+		=SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_ID AND
+		sa.AUTHORITIES_NAME=#{authoritiesName}
+	</select>
+
+
+	<select id="getSysAuthorityResourcesList" resultMap="sysAuthorityResources">
+		SELECT
+		<include refid="sysAuthorityResources_base_column" />
+		FROM
+		SYS_AUTHORITY_RESOURCES
+	</select>
+
+
+	<!--权限资源关联表 -->
+	<resultMap id="sysAuthoritiesResources" type="sysAuthoritiesResources">
+
+		<id property="authoritiesResourcesId" column="AUTHORITIES_RESOURCES_ID" />
+		<result property="authoritiesId" column="AUTHORITIES_ID" />
+		<result property="authorityResourcesId" column="AUTHORITY_RESOURCES_ID" />
+		<association property="sysAuthorityResources" column="R_AUTHORITY_RESOURCES_ID"
+			javaType="sysAuthorityResources" resultMap="sysAuthorityResources" />
+		<association property="sysAuthorities" column="A_AUTHORITIES_ID"
+			javaType="sysAuthorities" resultMap="sysAuthorities" />
+
+	</resultMap>
+
+	<!-- get all resource role relation -->
+	<select id="getResourcesAuthority" resultMap="sysAuthoritiesResources">
+		SELECT
+		sys_authority_resources.AUTHORITY_RESOURCES_ID as
+		R_AUTHORITY_RESOURCES_ID,
+		sys_authority_resources.AUTHORITY_RESOURCES_NAME,
+		sys_authority_resources.AUTHORITY_RESOURCES_DESC,
+		sys_authority_resources.AUTHORITY_RESOURCES_TYPE,
+		sys_authority_resources.AUTHORITY_RESOURCES_SORT,
+		sys_authority_resources.AUTHORITY_RESOURCES_URL,
+		sys_authority_resources.AUTHORITY_RESOURCES_ISSYS,
+		sys_authority_resources.AUTHORITY_RESOURCES_ENABLED,
+		sys_authorities_resources.AUTHORITIES_ID ,
+		sys_authorities_resources.AUTHORITY_RESOURCES_ID,
+		sys_authorities_resources.AUTHORITIES_RESOURCES_ID,
+		sys_authorities_resources.AUTHORITY_RESOURCES_ID,
+		sys_authorities.AUTHORITIES_ID as A_AUTHORITIES_ID,
+		sys_authorities.AUTHORITIES_NAME,
+		sys_authorities.AUTHORITIES_DESC,
+		sys_authorities.AUTHORITIES_ISSYS,
+		sys_authorities.AUTHORITIES_ENABLED
+		FROM
+		sys_authorities ,sys_authority_resources
+		,sys_authorities_resources
+		where
+		sys_authorities_resources.AUTHORITY_RESOURCES_ID=sys_authority_resources.AUTHORITY_RESOURCES_ID
+		and
+		sys_authorities_resources.AUTHORITIES_ID=sys_authorities.AUTHORITIES_ID
+	</select>
+	
+	
+	<select id="getAllResourcesAuthority" resultMap="sysAuthoritiesResources">
+		SELECT
+		sys_authority_resources.AUTHORITY_RESOURCES_ID as R_AUTHORITY_RESOURCES_ID,
+		sys_authority_resources.AUTHORITY_RESOURCES_NAME,
+		sys_authority_resources.AUTHORITY_RESOURCES_DESC,
+		sys_authority_resources.AUTHORITY_RESOURCES_TYPE,
+		sys_authority_resources.AUTHORITY_RESOURCES_SORT,
+		sys_authority_resources.AUTHORITY_RESOURCES_URL,
+		sys_authority_resources.AUTHORITY_RESOURCES_ISSYS,
+		sys_authority_resources.AUTHORITY_RESOURCES_ENABLED,
+		sys_authorities_resources.AUTHORITIES_ID ,
+		sys_authorities_resources.AUTHORITY_RESOURCES_ID,
+		sys_authorities_resources.AUTHORITIES_RESOURCES_ID,
+		sys_authorities_resources.AUTHORITY_RESOURCES_ID,
+        sys_authorities.AUTHORITIES_ID as A_AUTHORITIES_ID,
+		sys_authorities.AUTHORITIES_NAME,
+		sys_authorities.AUTHORITIES_DESC,
+		sys_authorities.AUTHORITIES_ISSYS,
+		sys_authorities.AUTHORITIES_ENABLED
+        FROM
+		sys_authority_resources
+                left join   sys_authorities_resources on sys_authorities_resources.AUTHORITY_RESOURCES_ID=sys_authority_resources.AUTHORITY_RESOURCES_ID 
+                left join  sys_authorities  on    sys_authorities_resources.AUTHORITIES_ID=sys_authorities.AUTHORITIES_ID
+		
+	</select>
+
+
+	<!-- get all resource role relation -->
+	<select id="getResourcesAuthorityByRoleId"  parameterType="String" resultMap="sysAuthoritiesResources">
+		SELECT
+		sys_authority_resources.AUTHORITY_RESOURCES_ID as R_AUTHORITY_RESOURCES_ID,
+		sys_authority_resources.AUTHORITY_RESOURCES_NAME,
+		sys_authority_resources.AUTHORITY_RESOURCES_DESC,
+		sys_authority_resources.AUTHORITY_RESOURCES_TYPE,
+		sys_authority_resources.AUTHORITY_RESOURCES_SORT,
+		sys_authority_resources.AUTHORITY_RESOURCES_URL,
+		sys_authority_resources.AUTHORITY_RESOURCES_ISSYS,
+		sys_authority_resources.AUTHORITY_RESOURCES_ENABLED,
+		sys_authorities_resources.AUTHORITIES_ID ,
+		sys_authorities_resources.AUTHORITY_RESOURCES_ID,
+		sys_authorities_resources.AUTHORITIES_RESOURCES_ID,
+		sys_authorities_resources.AUTHORITY_RESOURCES_ID,
+		sys_authorities.AUTHORITIES_ID as A_AUTHORITIES_ID,
+		sys_authorities.AUTHORITIES_NAME,
+		sys_authorities.AUTHORITIES_DESC,
+		sys_authorities.AUTHORITIES_ISSYS,
+		sys_authorities.AUTHORITIES_ENABLED
+		FROM
+		SYS_AUTHORITIES ,SYS_AUTHORITY_RESOURCES,SYS_AUTHORITIES_RESOURCES
+		where
+		SYS_AUTHORITIES_RESOURCES.AUTHORITIES_ID=SYS_AUTHORITIES.AUTHORITIES_ID AND SYS_AUTHORITIES_RESOURCES.AUTHORITY_RESOURCES_ID=SYS_AUTHORITY_RESOURCES.AUTHORITY_RESOURCES_ID
+		AND EXISTS (SELECT *
+		FROM SYS_AUTHORITY_ROLES_AUTHORITIES WHERE SYS_AUTHORITY_ROLES_AUTHORITIES.AUTHORITY_ROLES_ID=#{roleId} AND SYS_AUTHORITIES.AUTHORITIES_ID=SYS_AUTHORITY_ROLES_AUTHORITIES.AUTHORITIES_ID)
+
+	</select>
+
+	<delete id="delteTestId">
+
+		delete from sys_authorities
+	</delete>
+
+
+
+</mapper>

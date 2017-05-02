@@ -2,6 +2,7 @@ package com.framework.orm.mybatis.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p> IBaseDao.java.</p>
@@ -97,6 +98,18 @@ public interface IBaseDao <E extends Serializable> {
 	 *@version 1.0
 	 */
 	public int updateStatement(String paramString,Object prameter) throws Exception;
+	
+	/**
+	 *<p>Description:单表删除  .</p> 
+	 *<p>@param table_name 
+	 *<p>@param map
+	 *<p>@throws Exception void
+	 *@since Oct 13, 2014: 1:58:21 PM
+	 *@author xubin
+	 *@version 1.0
+	 */
+	public void deleteEntityById(String table_name,Map<String, Object> map)throws Exception;
+	
 	
 
 }

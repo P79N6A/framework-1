@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sysSession">
+
+	<resultMap id="sysSessionMap" type="sysSession">
+		<id property="sessionId" column="SESSION_ID" />
+		<result property="session" column="SESSION" />
+	</resultMap>
+
+	<sql id="baseSysSession_column">
+		sys_session.SESSION_ID
+		,sys_session.SESSION
+
+	</sql>
+	<!-- insert start -->
+	<sql id="insertSysSessionColumns">
+		<trim suffix="" suffixOverrides=",">
+			<if test="sessionId != null and sessionId != '' ">
+				SESSION_ID,
+			</if>
+
+			<if test="session != null and session != '' ">
+				SESSION,
+			</if>
+
+		</trim>
+	</sql>
+	<sql id="insertSysSessionParams">
+		<trim suffix="" suffixOverrides=",">
+			<if test="sessionId != null and sessionId != '' ">
+				#{sessionId,jdbcType=VARCHAR},
+			</if>
+			<if test="session != null and session != '' ">
+				#{session,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</sql>
+	<insert id="insertSysSession" parameterType="sysSession">
+		insert into sys_session
+		(
+		<include refid="insertSysSessionColumns" />
+		)
+		values
+		(
+		<include refid="insertSysSessionParams" />
+		)
+	</insert>
+	<!-- insert end -->
+	<!-- update start -->
+	<sql id="updateSysSessionParams">
+		<trim suffix="" suffixOverrides=",">
+			<if test="sessionId != null and sessionId != '' ">
+				SESSION_ID=#{sessionId,jdbcType=VARCHAR},
+			</if>
+			<if test="session != null and session != '' ">
+				SESSION=#{session,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</sql>
+	<update id="updateSysSession" parameterType="sysSession">
+		update sys_session
+		<set>
+			<include refid="updateSysSessionParams" />
+		</set>
+		where
+		SESSION_ID =
+		#{sessionId}
+	</update>
+	<!-- update end -->
+	<!-- 条件 查询 , 去掉主键列 -->
+	<sql id="queryCondition">
+		<where>
+			<trim suffixOverrides=",">
+				<if test="session != null and session != '' ">
+					and SESSION = #{session},
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	<delete id="deleteSysSessionById" parameterType="java.lang.String">
+		delete from
+		sys_session
+		where
+		SESSION_ID =
+		#{sessionId}
+	</delete>
+
+	<delete id="deleteSysSessionByIds" parameterType="java.util.List">
+		delete from sys_session where
+		SESSION_ID in
+		<foreach collection="list" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="selectSysSessionById" resultMap="sysSessionMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="baseSysSession_column" />
+		from sys_session
+		where
+		SESSION_ID =
+		#{sessionId}
+	</select>
+
+<!-- 	<select id="selectSysSessionPage" parameterType="page" -->
+<!-- 		resultMap="sysSessionMap" > -->
+<!-- 		select -->
+<!-- 		<include refid="baseSysSession_column" /> -->
+<!-- 		from sys_session -->
+<!-- 		<where> -->
+<!-- 			<include refid="queryCondition" /> -->
+<!-- 		</where> -->
+<!-- 	</select> -->
+
+</mapper>

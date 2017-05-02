@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="base">
+	<delete id="deleteByTableName"  parameterType="java.util.Map"
+		statementType="STATEMENT">
+		DELETE FROM ${TABLE_NAME}
+		<where>
+			<foreach collection="list" index="" item="item" open=" "
+				close=" " separator="and">
+				<choose>
+					<when test="item.tableColumnValue != null and item.tableColumnValue != ''">
+						${item.tableColumn} = '${item.tableColumnValue}'
+					</when>
+					<otherwise>
+						${item.tableColumn} = '${item.tableColumnValue}'
+					</otherwise>
+				</choose>
+			</foreach>
+		</where>
+	</delete>
+	
+	
+	
+
+
+</mapper>
