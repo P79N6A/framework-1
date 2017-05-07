@@ -37,6 +37,7 @@ public class BaseDao<E extends Serializable> extends SqlSessionDaoSupport implem
 		return getSqlSession().delete(paramString, entity) ;
 		
 	}
+	
 
 	@Override
 	public E getEntity(String paramString, Object entity) throws Exception {

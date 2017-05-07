@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 符号转义说明 -->
+<!-- &lt; < -->
+<!-- &gt; > -->
+<!-- &lt;&gt; <> -->
+<!-- &amp; & -->
+<!-- &apos; ' -->
+<!-- &quot; -->
+<!-- " <![CDATA[ 这里写你的SQL或者符号 ]]> -->
+
+<mapper namespace="taskJob">
+<!-- Result Map 数据库映射到实体类  -->
+	<resultMap id="taskJobMap" type="taskJob">
+		<id property="jobId" column="job_id" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="jobName" column="job_name" />
+		<result property="jobGroup" column="job_group" />
+		<result property="jobStatus" column="job_status" />
+		<result property="cronExpression" column="cron_expression" />
+		<result property="description" column="description" />
+		<result property="beanClass" column="bean_class" />
+		<result property="isConcurrent" column="is_concurrent" />
+		<result property="springId" column="spring_id" />
+		<result property="methodName" column="method_name" />
+	</resultMap>
+<!-- tableColumns  所有列 -->
+	<sql id="baseTaskJob_column">
+t_task_job.job_id
+		,t_task_job.create_time
+		,t_task_job.update_time
+		,t_task_job.job_name
+		,t_task_job.job_group
+		,t_task_job.job_status
+		,t_task_job.cron_expression
+		,t_task_job.description
+		,t_task_job.bean_class
+		,t_task_job.is_concurrent
+		,t_task_job.spring_id
+		,t_task_job.method_name
+
+	</sql>
+	<!-- insert start -->
+	<!-- insertColumns 插入数据库列 -->
+	<sql id="insertTaskJobColumns">
+		<trim suffix="" suffixOverrides=",">
+			<if
+				test="jobId != null and jobId != '' ">
+				job_id,
+			</if>
+
+			<if test="createTime != null ">
+				create_time,
+			</if>
+			<if test="updateTime != null ">
+				update_time,
+			</if>
+			<if
+				test="jobName != null and jobName != '' ">
+				job_name,
+			</if>
+
+			<if
+				test="jobGroup != null and jobGroup != '' ">
+				job_group,
+			</if>
+
+			<if
+				test="jobStatus != null and jobStatus != '' ">
+				job_status,
+			</if>
+
+			<if
+				test="cronExpression != null and cronExpression != '' ">
+				cron_expression,
+			</if>
+
+			<if
+				test="description != null and description != '' ">
+				description,
+			</if>
+
+			<if
+				test="beanClass != null and beanClass != '' ">
+				bean_class,
+			</if>
+
+			<if
+				test="isConcurrent != null and isConcurrent != '' ">
+				is_concurrent,
+			</if>
+
+			<if
+				test="springId != null and springId != '' ">
+				spring_id,
+			</if>
+
+			<if
+				test="methodName != null and methodName != '' ">
+				method_name,
+			</if>
+
+		</trim>
+	</sql>
+	
+<!-- insertParams  插入数据库值-->
+	<sql id="insertTaskJobParams">
+		<trim suffix="" suffixOverrides=",">
+			<if
+				test="jobId != null and jobId != '' ">
+				#{jobId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null ">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null ">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if
+				test="jobName != null and jobName != '' ">
+				#{jobName,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="jobGroup != null and jobGroup != '' ">
+				#{jobGroup,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="jobStatus != null and jobStatus != '' ">
+				#{jobStatus,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="cronExpression != null and cronExpression != '' ">
+				#{cronExpression,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="description != null and description != '' ">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="beanClass != null and beanClass != '' ">
+				#{beanClass,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="isConcurrent != null and isConcurrent != '' ">
+				#{isConcurrent,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="springId != null and springId != '' ">
+				#{springId,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="methodName != null and methodName != '' ">
+				#{methodName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 添加,插入记录   -->
+	<insert id="insertTaskJob" parameterType="taskJob">
+		insert into t_task_job
+		(
+		<include refid="insertTaskJobColumns" />
+		)
+		values
+		(
+		<include refid="insertTaskJobParams" />
+		)
+	</insert>
+	<!-- insert end -->
+	
+	<!-- update start -->
+	<sql id="updateTaskJobParams">
+		<trim suffix="" suffixOverrides=",">
+			<if
+				test="jobId != null and jobId != '' ">
+				job_id=#{jobId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null ">
+				create_time=#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null ">
+				update_time=#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if
+				test="jobName != null and jobName != '' ">
+				job_name=#{jobName,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="jobGroup != null and jobGroup != '' ">
+				job_group=#{jobGroup,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="jobStatus != null and jobStatus != '' ">
+				job_status=#{jobStatus,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="cronExpression != null and cronExpression != '' ">
+				cron_expression=#{cronExpression,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="description != null and description != '' ">
+				description=#{description,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="beanClass != null and beanClass != '' ">
+				bean_class=#{beanClass,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="isConcurrent != null and isConcurrent != '' ">
+				is_concurrent=#{isConcurrent,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="springId != null and springId != '' ">
+				spring_id=#{springId,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="methodName != null and methodName != '' ">
+				method_name=#{methodName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</sql>
+	<update id="updateTaskJob" parameterType="taskJob">
+		update t_task_job
+		<set>
+			<include refid="updateTaskJobParams" />
+		</set>
+		where
+		job_id =
+		#{jobId}
+	</update>
+	<!-- update end -->
+	<!-- 条件 查询 , 去掉主键列 -->
+	<sql id="queryCondition">
+		<where>
+			<trim suffixOverrides=",">
+				<if test="createTime != null ">
+					and create_time =
+					#{createTime}
+				</if>
+				<if test="updateTime != null ">
+					and update_time =
+					#{updateTime}
+				</if>
+				<if
+					test="jobName != null and jobName != '' ">
+					and job_name =
+					#{jobName}
+				</if>
+				<if
+					test="jobGroup != null and jobGroup != '' ">
+					and job_group =
+					#{jobGroup}
+				</if>
+				<if
+					test="jobStatus != null and jobStatus != '' ">
+					and job_status =
+					#{jobStatus}
+				</if>
+				<if
+					test="cronExpression != null and cronExpression != '' ">
+					and cron_expression =
+					#{cronExpression}
+				</if>
+				<if
+					test="description != null and description != '' ">
+					and description =
+					#{description}
+				</if>
+				<if
+					test="beanClass != null and beanClass != '' ">
+					and bean_class =
+					#{beanClass}
+				</if>
+				<if
+					test="isConcurrent != null and isConcurrent != '' ">
+					and is_concurrent =
+					#{isConcurrent}
+				</if>
+				<if
+					test="springId != null and springId != '' ">
+					and spring_id =
+					#{springId}
+				</if>
+				<if
+					test="methodName != null and methodName != '' ">
+					and method_name =
+					#{methodName}
+				</if>
+			</trim>
+		</where>
+	</sql>
+	
+	<!-- 条件 查询 , 去掉主键列 -->
+	<sql id="pageQueryCondition">
+		<where>
+			<trim suffixOverrides=",">
+				<if test="searchMap.taskJob.createTime != null ">
+					and create_time =
+					#{searchMap.taskJob.createTime}
+				</if>
+				<if test="searchMap.taskJob.updateTime != null ">
+					and update_time =
+					#{searchMap.taskJob.updateTime}
+				</if>
+				<if
+					test="searchMap.taskJob.jobName != null and searchMap.taskJob.jobName != '' ">
+					and job_name =
+					#{searchMap.taskJob.jobName}
+				</if>
+				<if
+					test="searchMap.taskJob.jobGroup != null and searchMap.taskJob.jobGroup != '' ">
+					and job_group =
+					#{searchMap.taskJob.jobGroup}
+				</if>
+				<if
+					test="searchMap.taskJob.jobStatus != null and searchMap.taskJob.jobStatus != '' ">
+					and job_status =
+					#{searchMap.taskJob.jobStatus}
+				</if>
+				<if
+					test="searchMap.taskJob.cronExpression != null and searchMap.taskJob.cronExpression != '' ">
+					and cron_expression =
+					#{searchMap.taskJob.cronExpression}
+				</if>
+				<if
+					test="searchMap.taskJob.description != null and searchMap.taskJob.description != '' ">
+					and description =
+					#{searchMap.taskJob.description}
+				</if>
+				<if
+					test="searchMap.taskJob.beanClass != null and searchMap.taskJob.beanClass != '' ">
+					and bean_class =
+					#{searchMap.taskJob.beanClass}
+				</if>
+				<if
+					test="searchMap.taskJob.isConcurrent != null and searchMap.taskJob.isConcurrent != '' ">
+					and is_concurrent =
+					#{searchMap.taskJob.isConcurrent}
+				</if>
+				<if
+					test="searchMap.taskJob.springId != null and searchMap.taskJob.springId != '' ">
+					and spring_id =
+					#{searchMap.taskJob.springId}
+				</if>
+				<if
+					test="searchMap.taskJob.methodName != null and searchMap.taskJob.methodName != '' ">
+					and method_name =
+					#{searchMap.taskJob.methodName}
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	<delete id="deleteTaskJobById" parameterType="java.lang.String">
+		delete from
+		t_task_job
+		where
+		job_id =
+		#{jobId}
+	</delete>
+
+	<delete id="deleteTaskJobByIds" parameterType="java.util.List">
+		delete from t_task_job where
+		job_id in
+		<foreach collection="list" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="selectTaskJobById" resultMap="taskJobMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="baseTaskJob_column" />
+		from t_task_job
+		where
+		job_id =
+		#{jobId}
+	</select>
+
+	<select id="selectTaskJobPage" parameterType="page"
+		resultMap="taskJobMap">
+		select
+		<include refid="baseTaskJob_column" />
+		from t_task_job
+		<include refid="pageQueryCondition" />
+	</select>
+	
+	<select id="selectTaskJobList" parameterType="taskJob"
+		resultMap="taskJobMap">
+		select
+		<include refid="baseTaskJob_column" />
+		from t_task_job
+	    <include refid="queryCondition" />
+	</select>
+	
+	<select id="selectTaskCountByTaskJob" parameterType="taskJob"
+		resultType="Long">
+		SELECT count(1) FROM t_task_job
+		<include refid="queryCondition" />
+	</select>
+
+</mapper>

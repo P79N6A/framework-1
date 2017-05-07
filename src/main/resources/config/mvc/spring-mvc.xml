@@ -21,7 +21,7 @@
 	<context:property-placeholder
 		ignore-unresolvable="true" location="classpath*:/config/web.properties" />
 	<context:component-scan
-		base-package="com.ss.code.controller,com.framework.quartz.controller" />
+		base-package="com.ss.code.controller,com.ss.user.controller" />
 
 	<mvc:annotation-driven
 		content-negotiation-manager="contentNegotiationManager">

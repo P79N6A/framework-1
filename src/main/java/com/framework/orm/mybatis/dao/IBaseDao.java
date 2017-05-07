@@ -48,7 +48,7 @@ public interface IBaseDao <E extends Serializable> {
 	 *@author xubin
 	 *@version 1.0
 	 */
-	public int delete(String paramString,Object entity) throws Exception;
+	public int delete(String paramString,Object parameter) throws Exception;
 	
 	/**
 	 * 

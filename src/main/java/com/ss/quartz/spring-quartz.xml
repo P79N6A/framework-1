@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 调度工厂 -->
+	<bean id="schedulerFactoryBean"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean" >
+	</bean>
+    <bean id="taskJobService" class="com.framework.quartz.service.impl.TaskJobService">
+        <property name="taskJobDao" ref="taskJobDao" />
+    </bean>
+    <bean id="taskJobDao" class="com.framework.quartz.dao.TaskJobDao" parent="baseDao" />
+    
+     <bean id="test" class="com.framework.quartz.service.Test"  />
+     
+     <bean id="springUtils" class="com.framework.quartz.util.SpringQuartzUtil" />
+</beans>

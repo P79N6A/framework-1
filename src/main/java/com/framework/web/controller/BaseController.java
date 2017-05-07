@@ -4,9 +4,6 @@ package com.framework.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,9 +19,7 @@ import com.framework.dto.SessionUser;
  * 2017年5月3日: 上午10:18:23
  */
 public abstract class BaseController {
-	protected Logger logger = Logger.getLogger(this.getClass());
 	
-	private static Log log = LogFactory.getLog(BaseController.class);
 	
 	public AppRequest getAppRequest() {
 

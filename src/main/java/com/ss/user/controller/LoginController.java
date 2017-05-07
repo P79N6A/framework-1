@@ -2,6 +2,7 @@
 package com.ss.user.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,8 @@ import com.framework.web.controller.BaseController;
  * <p>@version .</p>
  * 2017年5月3日: 上午11:43:30
  */
+@Controller
+@RequestMapping("/xb_default")
 public class LoginController extends BaseController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
