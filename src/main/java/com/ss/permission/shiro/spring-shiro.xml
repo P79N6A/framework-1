@@ -3,11 +3,11 @@
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
-		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
 	default-lazy-init="true">
 
 	<!-- Shiro的Web过滤器 -->
@@ -27,7 +27,7 @@
 			<map>
 				<entry key="role">
 					<bean
-						class="com.framework.permission.shiro.filter.RoleAuthorizationFilter" />
+						class="com.ss.permission.shiro.filter.RoleAuthorizationFilter" />
 				</entry>
 			</map>
 		</property>
@@ -57,7 +57,7 @@
 		<!-- <property name="sessionManager" ref="sessionManager"></property> -->
 		<!-- <property name="cacheManager" ref="cacheManager"></property> -->
 	</bean>
-	<bean id="sessionDAO" class="com.framework.permission.shiro.DataBaseSessionDao">
+	<bean id="sessionDAO" class="com.ss.permission.shiro.DataBaseSessionDao">
 		<property name="sessionIdGenerator" ref="sessionIdGenerator" />
 	</bean>
 	<!-- 会话ID生成器 -->
